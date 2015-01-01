@@ -1,4 +1,4 @@
-apocalypse_when
+Apocalypse When...?
 ===============
 
 Doomsday algorithm practice
