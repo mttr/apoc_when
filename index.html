@@ -1,29 +1,36 @@
 <!-- vim:set et ai sw=4 ts=4: -->
 <!DOCTYPE html>
-<html>
+<html ng-app="apocWhen">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
+    <script type="text/javascript" src="js/apoc_when.js"></script>
     <title>Apocalypse When...?</title>
     <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
     <style type="text/css" media="screen">
-    tr {
-        overflow: scroll;
-        width: 100%;
-    }
     .main > * {
         text-align: center;
     }
     </style>
 </head>
-<body>
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="js/materialize.js"></script>
-<script type="text/javascript" src="js/apoc_when.js"></script>
+<body ng-controller="ApocController">
+<ul id="mode-drop" class="dropdown-content">
+    <li><a href="#" ng-click="setMode('normal')">Find The Day</a></li>
+    <li><a href="#" ng-click="setMode('doomsday')">Find The Doomsday</a></li>
+</ul>
 <nav class="light-blue" role="navigation">
     <div class="container">
         <div class="nav-wrapper">
-            <div id="logo-container" class="brand-logo center" href="#">Apocalypse When...?</div>
+            <div class="col s12">
+                <a class="brand-logo" href="#">ApocWhen?</a>
+                <ul id="nav-mobile" class="right side-nav">
+                    <li><a class="dropdown-button" href="#!" data-activates="mode-drop">Mode<i class="mdi-navigation-arrow-drop-down right"></i></a></li>
+                </ul>
+                <a href="#" class="button-collapse" data-activates="nav-mobile"><i class="mdi-navigation-menu"></i></a>
+            </div>
         </div>
     </div>
 </nav>
@@ -31,28 +38,27 @@
 <br/>
 <div class="container">
     <div class="section">
+        <div class="main row"><div class="col s12"><h6 class="light">{{currentMode["directions"]}}</h6></div></div>
+    </div>
+    <div class="section">
         <div class="main row">
-            <div class="col s12 valign-wrapper"><h5 id=date class="light"></h5></div>
+            <div class="col s12 valign-wrapper"><h5 id=date class="light">{{currentMode["date_string"]()}}</h5></div>
         </div>
     </div>
     <div class="section">
         <div class="main row">
-            <div class="col m3 s4"><button class="btn waves-effect waves-light" type="button" id=checkAnswer onclick="checkAnswer(0)">Sun</button></div>
-            <div class="col m3 s4"><button class="btn waves-effect waves-light" type="button" id=checkAnswer onclick="checkAnswer(1)">Mon</button></div>
-            <div class="col m3 s4"><button class="btn waves-effect waves-light" type="button" id=checkAnswer onclick="checkAnswer(2)">Tue</button></div>
-            <div class="col m3 s4"><button class="btn waves-effect waves-light" type="button" id=checkAnswer onclick="checkAnswer(3)">Wed</button></div>
-            <div class="col m3 s4"><button class="btn waves-effect waves-light" type="button" id=checkAnswer onclick="checkAnswer(4)">Thu</button></div>
-            <div class="col m3 s4"><button class="btn waves-effect waves-light" type="button" id=checkAnswer onclick="checkAnswer(5)">Fri</button></div>
-            <div class="col m3 s4 offset-s4"><button class="btn waves-effect waves-light" type="button" id=checkAnswer onclick="checkAnswer(6)">Sat</button></div>
+            <div ng-repeat="day in daysOfWeek" class="col m3 s4 {{day.offset}}">
+                <button class="btn waves-effect waves-light" type="button" ng-click="checkAnswer(day.daynum)">{{day.day}}</button>
+            </div>
         </div>
     </div>
     <div class="section">
         <div id=results></div>
         <br/>
         <div id=score>
-            <div id="score_wins"></div>
-            <div id="score_losses"></div>
-            <div id="score_percent"></div>
+            <div id="score_wins">Wins: {{score.wins}}</div>
+            <div id="score_losses">Losses: {{score.losses}}</div>
+            <div id="score_percent">Percentage: {{score.perc}}</div>
         </div>
     </div>
 </div>
