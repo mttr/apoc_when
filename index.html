@@ -7,6 +7,10 @@
     <title>Apocalypse When...?</title>
     <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
     <style type="text/css" media="screen">
+    tr {
+        overflow: scroll;
+        width: 100%;
+    }
     .main > * {
         text-align: center;
     }
@@ -15,57 +19,7 @@
 <body>
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
-<script type="text/javascript" charset="utf-8">
-var quizDate = new Date();
-var wins = 0;
-var losses = 0;
-
-function randomDate(start, end) {
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-}
-
-function setRandomDate() {
-    quizDate = randomDate(new Date(2015, 0, 1), new Date(2015, 11, 31));
-    date.textContent = quizDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    day.selectedIndex = 0;
-}
-
-function checkAnswer() {
-    var selected = day.selectedIndex;
-
-    if (selected == 0) return;
-
-    var success = selected - 1 == quizDate.getDay();
-    results.textContent = success;
-
-    if (success) {
-        wins++;
-        setRandomDate();
-    } else {
-        losses++;
-    }
-    updateScore();
-}
-
-function updateScore() {
-    score_wins.textContent = "Wins: " + wins;
-    score_losses.textContent = "Losses: " + losses;
-
-    var d = losses + wins;
-
-    if (d > 0) {
-        score_percent.textContent = "Percent: " + (wins / d) * 100;
-    } else {
-        score_percent.textContent = "Percent: 0";
-    }
-}
-
-window.onload = function() {
-    setRandomDate();
-    updateScore();
-    $('select').material_select();
-};
-</script>
+<script type="text/javascript" src="js/apoc_when.js"></script>
 <nav class="light-blue" role="navigation">
     <div class="container">
         <div class="nav-wrapper">
@@ -78,19 +32,21 @@ window.onload = function() {
 <div class="container">
     <div class="section">
         <div class="main row">
-            <div class="col m4 s12"><select name="day" id="day">
-                <option disabled selected>Pick Day</option>
-                <option>Sunday</option>
-                <option>Monday</option>
-                <option>Tuesday</option>
-                <option>Wednesday</option>
-                <option>Thursday</option>
-                <option>Friday</option>
-                <option>Saturday</option>
-            </select></div>
-            <div class="col m4 s12 valign-wrapper"><h5 id=date class="light"></id></div>
-            <div class="col m4 s12"><button class="btn-large waves-effect waves-light" type="button" id=checkAnswer onclick="checkAnswer()">Answer</button></div>
+            <div class="col s12 valign-wrapper"><h5 id=date class="light"></h5></div>
         </div>
+    </div>
+    <div class="section">
+        <div class="main row">
+            <div class="col m3 s4"><button class="btn waves-effect waves-light" type="button" id=checkAnswer onclick="checkAnswer(0)">Sun</button></div>
+            <div class="col m3 s4"><button class="btn waves-effect waves-light" type="button" id=checkAnswer onclick="checkAnswer(1)">Mon</button></div>
+            <div class="col m3 s4"><button class="btn waves-effect waves-light" type="button" id=checkAnswer onclick="checkAnswer(2)">Tue</button></div>
+            <div class="col m3 s4"><button class="btn waves-effect waves-light" type="button" id=checkAnswer onclick="checkAnswer(3)">Wed</button></div>
+            <div class="col m3 s4"><button class="btn waves-effect waves-light" type="button" id=checkAnswer onclick="checkAnswer(4)">Thu</button></div>
+            <div class="col m3 s4"><button class="btn waves-effect waves-light" type="button" id=checkAnswer onclick="checkAnswer(5)">Fri</button></div>
+            <div class="col m3 s4 offset-s4"><button class="btn waves-effect waves-light" type="button" id=checkAnswer onclick="checkAnswer(6)">Sat</button></div>
+        </div>
+    </div>
+    <div class="section">
         <div id=results></div>
         <br/>
         <div id=score>
