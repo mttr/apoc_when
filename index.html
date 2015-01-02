@@ -1,0 +1,86 @@
+<!-- vim:set et ai sw=4 ts=4: -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Apocalypse When...?</title>
+    <style type="text/css" media="screen">
+    .main > * {
+        display: inline-block;
+    }
+    </style>
+    <script type="text/javascript" charset="utf-8">
+    var quizDate = new Date();
+    var wins = 0;
+    var losses = 0;
+
+    function randomDate(start, end) {
+        return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    }
+
+    function setRandomDate() {
+        quizDate = randomDate(new Date(2015, 0, 1), new Date(2015, 11, 31));
+        date.textContent = quizDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        day.selectedIndex = 0;
+    }
+
+    function checkAnswer() {
+        var selected = day.selectedIndex;
+
+        if (selected == 0) return;
+
+        var success = selected - 1 == quizDate.getDay();
+        results.textContent = success;
+
+        if (success) {
+            wins++;
+            setRandomDate();
+        } else {
+            losses++;
+        }
+        updateScore();
+    }
+
+    function updateScore() {
+        score_wins.textContent = "Wins: " + wins;
+        score_losses.textContent = "Losses: " + losses;
+
+        var d = losses + wins;
+        
+        if (d > 0) {
+            score_percent.textContent = "Percent: " + (wins / (losses + wins)) * 100;
+        } else {
+            score_percent.textContent = "Percent: 0";
+        }
+    }
+
+    window.onload = function() {
+        setRandomDate();
+        updateScore();
+    };
+    </script>
+</head>
+<body>
+<div class="main">
+    <select name="day" id="day">
+        <option selected>Pick Day</option>
+        <option>Sunday</option>
+        <option>Monday</option>
+        <option>Tuesday</option>
+        <option>Wednesday</option>
+        <option>Thursday</option>
+        <option>Friday</option>
+        <option>Saturday</option>
+    </select>
+    <div id=date></div>
+    <button type="button" id=checkAnswer onclick="checkAnswer()">Answer</button>
+</div>
+<div id=results></div>
+<br/>
+<div id=score>
+    <div id="score_wins"></div>
+    <div id="score_losses"></div>
+    <div id="score_percent"></div>
+</div>
+</body>
+</html>

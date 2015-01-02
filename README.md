@@ -1,4 +1,4 @@
 Apocalypse When...?
 ===============
 
-Doomsday algorithm practice
+Doomsday algorithm practice. Currently only for 2015...
