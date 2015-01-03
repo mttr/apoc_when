@@ -19,14 +19,20 @@ angular.module('apocWhen', [])
             { day: 'Sat', daynum: '6', offset: 'offset-s4' },
         ];
 
+        $scope.difficulty = [
+            { i:0, diff: "This year", start: new Date(2015, 0, 1), end: new Date(2015, 11, 31) },
+            { i:1, diff: "This century", start: new Date(2000, 0, 1), end: new Date(2099, 11, 31) },
+            { i:2, diff: "20th-21st", start: new Date(1900, 0, 1), end: new Date(2099, 11, 31) },
+        ];
+
+        $scope.selectedDiff = $scope.difficulty[0];
+
         $scope.modes = {
             normal: {
                 directions: "Which day of the week does this date land on?",
-                start_date: new Date(2015, 0, 1),
-                end_date: new Date(2015, 11, 31),
                 gen_date: function() {
-                    var mode = $scope.currentMode;
-                    var new_date = randomDate(mode["start_date"], mode["end_date"]);
+                    var diff = $scope.selectedDiff;
+                    var new_date = randomDate(diff["start"], diff["end"]);
 
                     return new_date;
                 },
@@ -39,8 +45,9 @@ angular.module('apocWhen', [])
                 start_date: new Date(1900, 0, 1),
                 end_date: new Date(2015, 0, 1),
                 gen_date: function() {
-                    var mode = $scope.currentMode;
-                    var new_date = randomDate(mode["start_date"], mode["end_date"]);
+                    var diff = $scope.selectedDiff;
+                    var new_date = randomDate(diff["start"], diff["end"]);
+
                     new_date.setMonth(11, 12); // Dec 12th
 
                     return new_date;
@@ -74,6 +81,11 @@ angular.module('apocWhen', [])
 
         $scope.setMode = function(mode) {
             $scope.currentMode = $scope.modes[mode];
+            $scope.quizDate = $scope.currentMode["gen_date"]();
+        };
+
+        $scope.setDiff = function(i) {
+            $scope.selectedDiff = $scope.difficulty[i];
             $scope.quizDate = $scope.currentMode["gen_date"]();
         };
     }]);

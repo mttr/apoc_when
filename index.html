@@ -21,6 +21,9 @@
     <li><a href="#" ng-click="setMode('normal')">Find The Day</a></li>
     <li><a href="#" ng-click="setMode('doomsday')">Find The Doomsday</a></li>
 </ul>
+<ul id="diff-drop" class="dropdown-content">
+    <li ng-repeat="diff in difficulty"><a href="#" ng-click="setDiff(diff.i)">{{diff.diff}}</a></li>
+</ul>
 <nav class="light-blue" role="navigation">
     <div class="container">
         <div class="nav-wrapper">
@@ -28,6 +31,7 @@
                 <a class="brand-logo" href="#">ApocWhen?</a>
                 <ul id="nav-mobile" class="right side-nav">
                     <li><a class="dropdown-button" href="#!" data-activates="mode-drop">Mode<i class="mdi-navigation-arrow-drop-down right"></i></a></li>
+                    <li><a class="dropdown-button" href="#!" data-activates="diff-drop">Difficulty<i class="mdi-navigation-arrow-drop-down right"></i></a></li>
                 </ul>
                 <a href="#" class="button-collapse" data-activates="nav-mobile"><i class="mdi-navigation-menu"></i></a>
             </div>
