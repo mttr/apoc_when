@@ -88,4 +88,17 @@ angular.module('apocWhen', [])
             $scope.selectedDiff = $scope.difficulty[i];
             $scope.quizDate = $scope.currentMode["gen_date"]();
         };
+
+        $scope.skip = function () {
+            $scope.score.losses++;
+            $scope.quizDate = $scope.currentMode["gen_date"]();
+            score.perc = (score.wins / (score.losses + score.wins)) * 100;
+        };
+
+        $scope.reset = function () {
+            $scope.currentMode = $scope.modes["normal"];
+            $scope.selectedDiff = $scope.difficulty[0];
+            $scope.score = { wins: 0, losses: 0, perc: 0 }
+            $scope.quizDate = $scope.currentMode["gen_date"]();
+        };
     }]);
