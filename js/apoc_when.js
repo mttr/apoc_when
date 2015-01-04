@@ -9,16 +9,6 @@ function randomDate(start, end) {
 
 angular.module('apocWhen', [])
     .controller('ApocController', ['$scope', function($scope) {
-        $scope.daysOfWeek = [
-            { day: 'Sun', daynum: '0', offset: '' },
-            { day: 'Mon', daynum: '1', offset: '' },
-            { day: 'Tue', daynum: '2', offset: '' },
-            { day: 'Wed', daynum: '3', offset: '' },
-            { day: 'Thu', daynum: '4', offset: '' },
-            { day: 'Fri', daynum: '5', offset: '' },
-            { day: 'Sat', daynum: '6', offset: 'offset-s4' },
-        ];
-
         $scope.difficulty = [
             { i:0, diff: "This year", start: new Date(2015, 0, 1), end: new Date(2015, 11, 31) },
             { i:1, diff: "This century", start: new Date(2000, 0, 1), end: new Date(2099, 11, 31) },
@@ -42,8 +32,6 @@ angular.module('apocWhen', [])
             },
             doomsday: {
                 directions: "What is the doomsday for this year?",
-                start_date: new Date(1900, 0, 1),
-                end_date: new Date(2015, 0, 1),
                 gen_date: function() {
                     var diff = $scope.selectedDiff;
                     var new_date = randomDate(diff["start"], diff["end"]);
@@ -101,4 +89,64 @@ angular.module('apocWhen', [])
             $scope.score = { wins: 0, losses: 0, perc: 0 }
             $scope.quizDate = $scope.currentMode["gen_date"]();
         };
-    }]);
+    }])
+    .directive('fullsection', function () {
+        return {
+            restrict: 'E',
+            transclude: true,
+            scope: {},
+            template:
+                '<div class="section">' +
+                    '<div class="main row"><div class="col s12 valign-wrapper" ng-transclude></div></div>' +
+                '</div>',
+            replace: true,
+        };
+    })
+    .directive('daybtns', function () {
+        return {
+            restrict: 'E',
+            transclude: false,
+            scope: {},
+            controller: function($scope, $element) {
+                $scope.daysOfWeek = [
+                    { day: 'Sun', daynum: '0', offset: '' },
+                    { day: 'Mon', daynum: '1', offset: '' },
+                    { day: 'Tue', daynum: '2', offset: '' },
+                    { day: 'Wed', daynum: '3', offset: '' },
+                    { day: 'Thu', daynum: '4', offset: '' },
+                    { day: 'Fri', daynum: '5', offset: '' },
+                    { day: 'Sat', daynum: '6', offset: 'offset-s4' },
+                ];
+
+                $scope.checkAnswer = function(selected) {
+                    $scope.$parent.checkAnswer(selected);
+                };
+            },
+            template:
+                '<div class="section">' +
+                    '<div class="main row">' +
+                        '<div ng-repeat="day in daysOfWeek" class="col m3 s4 {{day.offset}}">' +
+                            '<button class="btn waves-effect waves-light" type="button" ng-click="checkAnswer(day.daynum)">{{day.day}}</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>',
+            replace: true,
+        };
+    })
+    .directive('score', function () {
+        return {
+            restrict: 'E',
+            transclude: true,
+            scope: {},
+            controller: function($scope, $element) {
+                $scope.score = $scope.$parent.score;
+            },
+            template:
+                '<div id=score>' +
+                    '<div id="score_wins">Wins: {{score.wins}}</div>' +
+                    '<div id="score_losses">Losses: {{score.losses}}</div>' +
+                    '<div id="score_percent">Percentage: {{score.perc}}</div>' +
+                '</div>',
+            replace: true,
+        };
+    })
